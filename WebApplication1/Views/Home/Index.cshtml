@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+</head>
+<body>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Syötä nimesi alla olevaan kenttään ja paina tallenna</h4>
+                </div>
+                <div class="modal-body">
+                    <input id="custName" placeholder="Etunimi Sukunimi" />
+
+                </div>
+                <div class="modal-footer">
+                    
+                    <button type="button" id="SaveButton" class="btn btn-primary">Tallenna</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <h1>Testivideo</h1>
+
+
+
+    <video id="myVideo" controls controlsList="nodownload">
+
+        <source src="~/Content/SampleVideo_640x360_1mb.webm" type="video/webm">
+        <source src="~/Content/SampleVideo_640x360_1mb.mp4" type="video/mp4">
+
+    </video>
+
+    <script>
+        var vid = document.getElementById("myVideo");
+        vid.onended = function() {
+
+            $("#myModal").modal("show");
+            $("#SaveButton").click(function () {
+
+                var custName = $("#custName").val();
+
+                if (custName == "") {
+                   alert("Syötä Etu- ja Sukunimesi");
+                   return;
+
+
+                };
+                
+                
+             $.ajax({
+                 type: "POST",
+                 url: '/Home/Index',
+                 //dataType: 'json',
+                 async: false,
+                 data: JSON.stringify({ "CustomerName": custName,}),
+                 success: function () {
+                     alert("Kiitos videon katselusta! Tiedot tallennettu! ");
+                     $(this).prev().click();
+                     location.reload();
+                 }
+
+                
+
+             });
+
+            });
+
+          
+        };
+    </script>
+
+</body>
+</html>
+
